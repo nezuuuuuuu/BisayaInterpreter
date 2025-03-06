@@ -24,13 +24,13 @@ public class VariableHandler {
                     returnvalue=dataTypeInt(tokens);
                     break;
                 case "TINUOD":
-                    returnvalue=dataTypeBool();
+                    returnvalue=dataTypeBool(tokens);
                     break;
                 case "TIPIK":
                     returnvalue=dataTypeFloat(tokens);
                     break;
                 default:
-                    System.out.println("Invalid data type");
+                    System.out.println("Invalid data typed");
                     return null;
             }
         } else {
@@ -57,12 +57,19 @@ public class VariableHandler {
         Token current = tokens.getFirst();
         String variableName;
 
+
         if (current.type == TokenType.IDENTIFIER) {
+            if(variables.containsKey(current.value)){
+                System.out.println("Invalid variable name. name already used");
+                return .0;
+            }
             variableName = current.value;
+
         } else {
-            System.out.println("Invalid variable name");
+            System.out.println("Invalid variable name. keyword");
             return .0;
         }
+
 
         tokens.removeFirst();
 
@@ -87,11 +94,14 @@ public class VariableHandler {
         return value;
     }
     public static char dataTypeChar(List<Token> tokens) {
-        System.out.println("Asdasddasd here");
         Token current = tokens.getFirst();
         String variableName;
 
         if (current.type == TokenType.IDENTIFIER) {
+            if(variables.containsKey(current.value)){
+                System.out.println("Invalid variable name. name already used");
+               return 'n';
+            }
             variableName = current.value;
         } else {
             System.out.println("Invalid variable name");
@@ -119,7 +129,60 @@ public class VariableHandler {
         return  current.value.charAt(0);
 
     }
-    public static boolean dataTypeBool() { return false; }
+    public static boolean dataTypeBool(List<Token> tokens) {
+        Token current = tokens.getFirst();
+        String variableName;
+
+
+        if (current.type == TokenType.IDENTIFIER) {
+            if(variables.containsKey(current.value)){
+                System.out.println("Invalid variable name. name already used");
+                return false;
+            }
+            variableName = current.value;
+        } else {
+            System.out.println("Invalid variable name");
+            return false;
+        }
+        tokens.removeFirst();
+        current = tokens.getFirst();
+
+        if (tokens.isEmpty() || tokens.getFirst().type != TokenType.ASSIGN) {
+            System.out.println("Operator '=' should be after identifier");
+            return false;
+        }
+
+        tokens.removeFirst();
+
+        current = tokens.getFirst();
+
+        tokens.removeFirst();
+        System.out.println(tokens);
+//           if(tokens.size()>1){
+//               System.out.println("");
+//               return false;
+//           } implement later for logical operators
+
+
+
+        System.out.println(current.value);
+        if (Objects.equals(current.value, "OO")){
+
+            variables.put(variableName, true);
+
+        }else if (Objects.equals(current.value, "DILI")){
+
+            variables.put(variableName, false);
+
+        }else {
+            System.out.println("Error only OO and DILI");
+            return false;
+        }
+
+
+        return true;
+
+    }
 
 
     public static Double evaluateExpression(List<Token> tokens) {

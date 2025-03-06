@@ -13,8 +13,8 @@ public class Keyword {
         keywords.put("KATAPUSAN", "Indicates interface implementation");
         keywords.put("IPAKITA", "Indicates interface implementation");
         keywords.put("DAWAT", "Indicates interface implementation");
-        keywords.put("LETRA", "Indicates interface implementation");
-        keywords.put("LETRA", "Indicates interface implementation");
+        keywords.put("OO", "Indicates interface implementation");
+        keywords.put("DILI", "Indicates interface implementation");
         keywords.put("LETRA", "Indicates interface implementation");
         keywords.put("LETRA", "Indicates interface implementation");
         keywords.put("LETRA", "Indicates interface implementation");

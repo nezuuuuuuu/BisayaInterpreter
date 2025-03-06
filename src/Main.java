@@ -1,13 +1,16 @@
 public class Main {
 
     public static void main(String[] args) {
-        
-        Tokenizer token= new Tokenizer("MUGNA LETRA d = 'h'");
-        VariableHandler.declareVariable(token.tokenize());
-        token= new Tokenizer("MUGNA NUMERO c = 7");
+
+        Tokenizer token;
+        token= new Tokenizer("MUGNA TINUOD c = OO c");
 
         VariableHandler.declareVariable(token.tokenize());
 //        System.out.print(token.tokens);
+
+
+
+//        Interpreter interpreter = new Interpreter();
 
     }
 }
