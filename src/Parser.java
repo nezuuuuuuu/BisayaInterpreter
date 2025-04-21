@@ -7,7 +7,7 @@ public class Parser {
         Token current ;
         int size = tokens.size();
         boolean SOF= false;
-        System.out.println(tokens);
+//        System.out.println(tokens);
         for(;index<size;index++){
             current = tokens.get(index);
 

@@ -10,19 +10,19 @@ public class Printer {
 //        System.out.println("HERERE"+tokenList.get( ++Parser.index));
         String to_print="";
         Token token = tokenList.get(Parser.index);
-        System.out.println(token);
+//        System.out.println(token);
         while(true) {
             List<Token> tempList= new ArrayList<>();
             switch (token.getType()){
 
                 case TokenType.IDENTIFIER:
                     if(VariableHandler.variables.get( token.getValue()) instanceof Character ){
-                        System.out.println("its a character");
+//                        System.out.println("its a character");
                         to_print+=VariableHandler.variables.get( token.getValue());
                         break;
                     }
 
-                    while(token.getType()!=TokenType.AMPERSAND){
+                    while(token.getType()!=TokenType.AMPERSAND||token.getType()!=TokenType.DOLLAR){
                         System.out.println("here");
                         if(token.getType()== TokenType.IDENTIFIER){
                             tempList.add(new Token(TokenType.NUMBER,VariableHandler.variables.get(token.getValue()).toString()));
@@ -32,7 +32,7 @@ public class Printer {
                             tempList.add(new Token(TokenType.NUMBER,token.getValue()));
                         }
                         if (token.getType().equals(TokenType.EOF)){
-                            System.out.println("done");
+//                            System.out.println("done");
                             break;
                         }
                         if(token.getType()!=TokenType.AMPERSAND)
@@ -42,7 +42,7 @@ public class Printer {
                     to_print +=VariableHandler.evaluateExpression(tempList);
 //                    VariableHandler.evaluateExpression();
                 case TokenType.NUMBER:
-                    while(token.getType()!=TokenType.AMPERSAND){
+                    while(token.getType()!=TokenType.AMPERSAND||token.getType()!=TokenType.DOLLAR){
 
                         if(token.getType()== TokenType.IDENTIFIER){
                             tempList.add(new Token(TokenType.NUMBER,VariableHandler.variables.get(token.getValue()).toString()));
@@ -52,7 +52,7 @@ public class Printer {
                             tempList.add(new Token(TokenType.NUMBER,token.getValue()));
                         }
                         if (token.getType().equals(TokenType.EOF)){
-                            System.out.println("done");
+//                            System.out.println("done");
                             break;
                         }
                         if(Parser.index<tokenList.size()-1)
@@ -62,11 +62,14 @@ public class Printer {
                     break;
 
             }
+            if(token.getType()==TokenType.DOLLAR){
+                to_print+= "\n" ;
+            }
             token=  tokenList.get(++Parser.index);
             if (token.getType()==TokenType.AMPERSAND){
                 token=  tokenList.get(++Parser.index);
             }else{
-                System.out.println("VALUEEEE "+ to_print);
+                System.out.println(to_print);
                 to_print="";
                 return;
             }
