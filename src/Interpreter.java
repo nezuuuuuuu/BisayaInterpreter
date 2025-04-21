@@ -9,8 +9,6 @@ public class Interpreter {
     BufferedReader bf;
 
 
-
-
     public Interpreter() {
         try {
             bf = new BufferedReader(new FileReader("C:\\Users\\Nico\\IdeaProjects\\Bisaya Interpreter\\src\\TEST_CASES\\declaration01"));

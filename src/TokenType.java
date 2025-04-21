@@ -1,17 +1,23 @@
 public enum TokenType {
+        START,      // SUGOD
+        EOF,        // KATAPUSAN
         NUMBER,
+        CHAR,
+        STRING,
         IDENTIFIER,
         KEYWORD,
         OPERATOR,
-        PAREN,
-        ASSIGN,
-        EOF,
-        LPAREN,
-        RPAREN,
-        CHAR,
-        START,
-        END
-
+        LPAREN,     // (
+        RPAREN,     // )
+        LBRACK,     // [
+        RBRACK,     // ]
+        ASSIGN,     // =
+        COMMA,      // ,
+        AMPERSAND,  // &
+        DOLLAR,
+        HASHTAG,
+        QOUTATION,
+        SINGLE_QOUTATION
 }
 
 

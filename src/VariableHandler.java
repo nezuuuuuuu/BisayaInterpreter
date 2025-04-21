@@ -2,59 +2,97 @@ import java.util.*;
 
 public class VariableHandler {
     static HashMap<String, Object> variables = new HashMap<>();
+    public static int current_index;
 
-    public static Object declareVariable(List<Token> tokens) {
-
-
-
-        Token current = tokens.getFirst();
-        tokens.removeFirst();
-
-        Object returnvalue=null;
-        System.out.println(current);
-        current = tokens.getFirst();
-        tokens.removeFirst();
-        if (current.type == TokenType.KEYWORD) {
-            switch (current.value) {
-                case "LETRA":
-
-                    returnvalue=dataTypeChar(tokens);
-                    break;
-                case "NUMERO":
-                    returnvalue=dataTypeInt(tokens);
-                    break;
-                case "TINUOD":
-                    returnvalue=dataTypeBool(tokens);
-                    break;
-                case "TIPIK":
-                    returnvalue=dataTypeFloat(tokens);
-                    break;
-                default:
-                    System.out.println("Invalid data typed");
-                    return null;
-            }
-        } else {
-            System.out.println("Invalid data type");
+    public static Object[] declareVariable(List<Token> tokens, int index) {
+        current_index = index;
+//        System.out.println(tokens.get(current_index));
+        if (!tokens.get(current_index).value.equals("MUGNA")) {
+            System.out.println("Expected 'MUGNA' at position " + current_index);
             return null;
         }
 
+        Token dataTypeToken = tokens.get(++current_index);
+        if (dataTypeToken.type != TokenType.KEYWORD) {
+            System.out.println("Expected data type keyword after MUGNA");
+            return null;
+        }
 
-        System.out.println(variables);
+        Object returnValue = null;
+        switch (dataTypeToken.value) {
+            case "LETRA":
+                returnValue = dataTypeChar(tokens);
+                break;
+            case "NUMERO":
+                returnValue =(int) dataTypeInt(tokens);
+                break;
+            case "TINUOD":
+                returnValue = dataTypeBool(tokens);
+                break;
+            case "TIPIK":
+                returnValue = dataTypeFloat(tokens);
+                break;
+            default:
+                System.out.println("Unknown data type: " + dataTypeToken.value);
+                return null;
+        }
 
-        return returnvalue;
+        return new Object[]{returnValue, current_index};
     }
 
 
     public static int dataTypeInt(List<Token> tokens) {
 
 
-        return dataTypeFloat(tokens).intValue();
+        return dataTypeInteger(tokens).intValue();
+    }
+    public static Integer dataTypeInteger(List<Token> tokens) {
+
+        Token current = tokens.get(++current_index);
+        String variableName;
+
+
+        if (current.type == TokenType.IDENTIFIER) {
+            if(variables.containsKey(current.value)){
+                System.out.println("Invalid variable name. name already used");
+                return 0;
+            }
+            variableName = current.value;
+
+        } else {
+            System.out.println("Invalid variable name. keyword");
+            return 0;
+        }
+
+
+
+
+
+
+        if (tokens.isEmpty() || tokens.get(++current_index).type != TokenType.ASSIGN) {
+            System.out.println("Operator '=' should be after identifier");
+            return 0;
+        }
+
+
+
+
+        Integer value = evaluateExpression(tokens.subList(current_index,tokens.size()-1)).intValue();
+        if (value == null) {
+            System.out.println("Invalid expression");
+            return 0;
+        }
+
+
+        variables.put(variableName, value);
+        ;
+        return value;
     }
 
 
     public static Double dataTypeFloat(List<Token> tokens) {
 
-        Token current = tokens.getFirst();
+        Token current = tokens.get(++current_index);
         String variableName;
 
 
@@ -71,18 +109,19 @@ public class VariableHandler {
         }
 
 
-        tokens.removeFirst();
 
 
-        if (tokens.isEmpty() || tokens.getFirst().type != TokenType.ASSIGN) {
+
+
+        if (tokens.isEmpty() || tokens.get(++current_index).type != TokenType.ASSIGN) {
             System.out.println("Operator '=' should be after identifier");
             return .0;
         }
 
-        tokens.removeFirst();
 
 
-        Double value = evaluateExpression(tokens);
+
+        Double value = evaluateExpression(tokens.subList(current_index,tokens.size()-1));
         if (value == null) {
             System.out.println("Invalid expression");
             return .0;
@@ -94,7 +133,7 @@ public class VariableHandler {
         return value;
     }
     public static char dataTypeChar(List<Token> tokens) {
-        Token current = tokens.getFirst();
+        Token current = tokens.get(++current_index);
         String variableName;
 
         if (current.type == TokenType.IDENTIFIER) {
@@ -108,19 +147,18 @@ public class VariableHandler {
             return 'n';
         }
 
-        tokens.removeFirst();
-        if (tokens.isEmpty() || tokens.getFirst().type != TokenType.ASSIGN) {
+
+        if (tokens.isEmpty() || tokens.get(++current_index).type != TokenType.ASSIGN) {
             System.out.println("Operator '=' should be after identifier");
             return 'n';
         }
 
-        tokens.removeFirst();
 
-        current = tokens.getFirst();
-        System.out.println(current.value + "this is the value");
+
+        current = tokens.get(++current_index);
         if (current.type == TokenType.CHAR){
             if(current.value.length()==1){
-                variables.put(variableName, current.value);
+                variables.put(variableName, current.value.charAt(0));
             }
         }
 
@@ -130,7 +168,7 @@ public class VariableHandler {
 
     }
     public static boolean dataTypeBool(List<Token> tokens) {
-        Token current = tokens.getFirst();
+        Token current = tokens.get(++current_index);
         String variableName;
 
 
@@ -144,20 +182,19 @@ public class VariableHandler {
             System.out.println("Invalid variable name");
             return false;
         }
-        tokens.removeFirst();
-        current = tokens.getFirst();
 
-        if (tokens.isEmpty() || tokens.getFirst().type != TokenType.ASSIGN) {
+
+        if (tokens.isEmpty() || tokens.get(++current_index).type != TokenType.ASSIGN) {
             System.out.println("Operator '=' should be after identifier");
             return false;
         }
 
-        tokens.removeFirst();
 
-        current = tokens.getFirst();
 
-        tokens.removeFirst();
-        System.out.println(tokens);
+        current = tokens.get(++current_index);
+
+
+//        System.out.println(tokens);
 //           if(tokens.size()>1){
 //               System.out.println("");
 //               return false;
@@ -165,7 +202,7 @@ public class VariableHandler {
 
 
 
-        System.out.println(current.value);
+//        System.out.println(current.value);
         if (Objects.equals(current.value, "OO")){
 
             variables.put(variableName, true);
